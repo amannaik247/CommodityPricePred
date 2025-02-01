@@ -130,14 +130,14 @@ def main():
             """
         )
 
-    elif page == "Price Forecast?":
-        st.header("👥 Price Forecast")
-        st.write(
-            """
-            Uses a trained LSTM multivariate model to predict future prices
-            based on past data and seasonal trends.
-            """
-        )
+    # elif page == "Price Forecast?":
+    #     st.header("👥 Price Forecast")
+    #     st.write(
+    #         """
+    #         Uses a trained LSTM multivariate model to predict future prices
+    #         based on past data and seasonal trends.
+    #         """
+    #     )
 
     elif page == "Sentiment Analysis?":
         st.header("🤖 Sentiment Analysis")
