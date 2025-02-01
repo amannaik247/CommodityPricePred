@@ -76,7 +76,7 @@ def display_dashboard():
             return
 
         # Extract key metrics
-        current_price = df["value"].iloc[-1]  # Current price
+        current_price = df["value"].iloc[-13]  # Current price
         one_month_prediction = df["value"].iloc[-12]  # 1 month prediction
         six_month_prediction = df["value"].iloc[-6]  # 6 month prediction
         one_year_prediction = df["value"].iloc[-1]  # 1 year prediction (latest available)
@@ -87,9 +87,18 @@ def display_dashboard():
         highest_price_date = last_year_data['value'].idxmax()  # Get the date of the highest price
         highest_price_month = highest_price_date.strftime("%B %Y")  # Get the month name
 
-        ytd_high = df['value'].max()  # YTD high
-        ytd_low = df['value'].min()  # YTD low
-        seven_day_average = df['value'].rolling(window=7).mean().iloc[-1]  # 7-day average
+        # Calculate lowest price in the last year and the corresponding month
+        last_year_data = df[-12:]
+        lowest_price = last_year_data['value'].min()
+        lowest_price_date = last_year_data['value'].idxmin()  # Get the date of the lowest price
+        lowest_price_month = lowest_price_date.strftime("%B %Y")  # Get the month name
+
+        # Calculate percentage change from previous month to current month
+        previous_month_price = df["value"].iloc[-14]  # Price from two months ago
+        percentage_change = ((current_price - previous_month_price) / previous_month_price) * 100
+        
+        # Calculate average price for the whole 1 year prediction
+        average_price_this_year = df["value"].iloc[-12:].mean()  # Average price for the last year
 
         # Combine metrics into a single bounding box
         metrics_content = f"""
@@ -116,16 +125,16 @@ def display_dashboard():
                     <p style="font-size: 36px; margin: 0;">₹{highest_price:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">YTD High</h4>
-                    <p style="font-size: 36px; margin: 0;">₹{ytd_high:.2f}</p>
+                    <h4 style="font-size: 18px; margin: 0;">Lowest Price ({lowest_price_month})</h4>
+                    <p style="font-size: 36px; margin: 0;">₹{lowest_price:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">YTD Low</h4>
-                    <p style="font-size: 36px; margin: 0;">₹{ytd_low:.2f}</p>
+                    <h4 style="font-size: 18px; margin: 0;">% Change from Previous Month</h4>
+                    <p style="font-size: 36px; margin: 0;">{percentage_change:.2f}%</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">7-Day Average</h4>
-                    <p style="font-size: 36px; margin: 0;">₹{seven_day_average:.2f}</p>
+                    <h4 style="font-size: 18px; margin: 0;">Average Price (2025)</h4>
+                    <p style="font-size: 36px; margin: 0;">₹{average_price_this_year:.2f}</p>
                 </div>
             </div>
         </div>
