@@ -71,7 +71,7 @@ def display_dashboard():
         df = df.dropna()  # Remove rows with NaN values
 
         # Check if the DataFrame has enough data
-        if len(df) < 12:
+        if len(df) < 14:
             st.error("Not enough data available for predictions.")
             return
 
@@ -88,7 +88,6 @@ def display_dashboard():
         highest_price_month = highest_price_date.strftime("%B %Y")  # Get the month name
 
         # Calculate lowest price in the last year and the corresponding month
-        last_year_data = df[-12:]
         lowest_price = last_year_data['value'].min()
         lowest_price_date = last_year_data['value'].idxmin()  # Get the date of the lowest price
         lowest_price_month = lowest_price_date.strftime("%B %Y")  # Get the month name
@@ -96,9 +95,9 @@ def display_dashboard():
         # Calculate percentage change from previous month to current month
         previous_month_price = df["value"].iloc[-14]  # Price from two months ago
         percentage_change = ((current_price - previous_month_price) / previous_month_price) * 100
-        
+
         # Calculate average price for the whole 1 year prediction
-        average_price_this_year = df["value"].iloc[-12:].mean()  # Average price for the last year
+        average_price_last_year = df["value"].mean()  # Average price for the last year
 
         # Combine metrics into a single bounding box
         metrics_content = f"""
@@ -133,8 +132,8 @@ def display_dashboard():
                     <p style="font-size: 36px; margin: 0;">{percentage_change:.2f}%</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">Average Price (2025)</h4>
-                    <p style="font-size: 36px; margin: 0;">₹{average_price_this_year:.2f}</p>
+                    <h4 style="font-size: 18px; margin: 0;">Average Price (Last Year)</h4>
+                    <p style="font-size: 36px; margin: 0;">₹{average_price_last_year:.2f}</p>
                 </div>
             </div>
         </div>
@@ -147,6 +146,20 @@ def display_dashboard():
         st.subheader("Price Over Time")
         line_fig = px.line(df, x=df.index, y="value", title=f"{commodity} Price Over Time")  # Use index for x-axis
         st.plotly_chart(line_fig)
+
+        # Display the last 12 months of data
+        st.subheader("Last 12 Months of Data")
+        last_12_months_df = df.last('12M')  # Get the last 12 months of data
+        st.dataframe(last_12_months_df.style.format({"value": "₹{:.2f}"}))  # Format the value column
+
+        # Provide a download option for the DataFrame
+        csv = last_12_months_df.to_csv(index=True).encode('utf-8')
+        st.download_button(
+            label="Download Last 12 Months Data",
+            data=csv,
+            file_name=f"{commodity.lower().replace(' ', '_')}_last_12_months.csv",
+            mime="text/csv",
+        )
 
     else:
         st.error(f"No data available for {commodity}.")
