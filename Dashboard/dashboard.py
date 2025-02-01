@@ -103,7 +103,7 @@ def display_dashboard():
         # Combine metrics into a single bounding box
         metrics_content = f"""
         <div style="background: linear-gradient(to right, #1e3c72, #2a5298); padding: 20px; border-radius: 10px; color: white;">
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 20px;">
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 20px;">
                 <div style="text-align: left;">
                     <h4 style="font-size: 18px; margin: 0;">Current Price</h4>
                     <p style="font-size: 36px; margin: 0;">₹{current_price:.2f}</p>
