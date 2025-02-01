@@ -88,6 +88,7 @@ def display_dashboard():
         highest_price_month = highest_price_date.strftime("%B %Y")  # Get the month name
 
         # Calculate lowest price in the last year and the corresponding month
+        last_year_data = df[-12:]
         lowest_price = last_year_data['value'].min()
         lowest_price_date = last_year_data['value'].idxmin()  # Get the date of the lowest price
         lowest_price_month = lowest_price_date.strftime("%B %Y")  # Get the month name
@@ -95,45 +96,45 @@ def display_dashboard():
         # Calculate percentage change from previous month to current month
         previous_month_price = df["value"].iloc[-14]  # Price from two months ago
         percentage_change = ((current_price - previous_month_price) / previous_month_price) * 100
-
+        
         # Calculate average price for the whole 1 year prediction
-        average_price_last_year = df["value"].mean()  # Average price for the last year
+        average_price_this_year = df["value"].iloc[-12:].mean()  # Average price for the last year
 
         # Combine metrics into a single bounding box
         metrics_content = f"""
         <div style="background: linear-gradient(to right, #1e3c72, #2a5298); padding: 20px; border-radius: 10px; color: white;">
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 20px;">
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">Current Price</h4>
-                    <p style="font-size: 36px; margin: 0;">₹{current_price:.2f}</p>
+                    <h4 style="font-size: 12px; margin: -10;">Current Price</h4>
+                    <p style="font-size: 36px; margin: -10;">₹{current_price:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">1 Month Prediction</h4>
-                    <p style="font-size: 36px; margin: 0;">₹{one_month_prediction:.2f}</p>
+                    <h4 style="font-size: 12px; margin: -10;">1 Month Prediction</h4>
+                    <p style="font-size: 36px; margin: -10;">₹{one_month_prediction:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">6 Month Prediction</h4>
-                    <p style="font-size: 36px; margin: 0;">₹{six_month_prediction:.2f}</p>
+                    <h4 style="font-size: 12px; margin: -10;">6 Month Prediction</h4>
+                    <p style="font-size: 36px; margin: -10;">₹{six_month_prediction:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">1 Year Prediction</h4>
-                    <p style="font-size: 36px; margin: 0;">₹{one_year_prediction:.2f}</p>
+                    <h4 style="font-size: 12px; margin: -10;">1 Year Prediction</h4>
+                    <p style="font-size: 36px; margin: -10;">₹{one_year_prediction:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">Highest Price ({highest_price_month})</h4>
-                    <p style="font-size: 36px; margin: 0;">₹{highest_price:.2f}</p>
+                    <h4 style="font-size: 12px; margin: -10;">Highest Price ({highest_price_month})</h4>
+                    <p style="font-size: 36px; margin: -10;">₹{highest_price:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">Lowest Price ({lowest_price_month})</h4>
-                    <p style="font-size: 36px; margin: 0;">₹{lowest_price:.2f}</p>
+                    <h4 style="font-size: 12px; margin: -10;">Lowest Price ({lowest_price_month})</h4>
+                    <p style="font-size: 36px; margin: -10;">₹{lowest_price:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">% Change from Previous Month</h4>
-                    <p style="font-size: 36px; margin: 0;">{percentage_change:.2f}%</p>
+                    <h4 style="font-size: 12px; margin: -10;">% Change from Previous Month</h4>
+                    <p style="font-size: 36px; margin: -10;">{percentage_change:.2f}%</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 18px; margin: 0;">Average Price (Last Year)</h4>
-                    <p style="font-size: 36px; margin: 0;">₹{average_price_last_year:.2f}</p>
+                    <h4 style="font-size: 12px; margin: -10;">Average Price (225)</h4>
+                    <p style="font-size: 36px; margin: -10;">₹{average_price_this_year:.2f}</p>
                 </div>
             </div>
         </div>
@@ -150,7 +151,23 @@ def display_dashboard():
         # Display the last 12 months of data
         st.subheader("Last 12 Months of Data")
         last_12_months_df = df.last('12M')  # Get the last 12 months of data
-        st.dataframe(last_12_months_df.style.format({"value": "₹{:.2f}"}))  # Format the value column
+
+        # Format the index to show only year, month, and day
+        last_12_months_df.index = last_12_months_df.index.strftime('%Y-%m-%d')
+
+        # Style the DataFrame for better presentation
+        styled_df = last_12_months_df.style.format({"value": "₹{:.2f}"}) \
+            .set_table_attributes('style="width: 100%; border-collapse: collapse;"') \
+            .set_properties(**{'text-align': 'left', 'font-size': '14px'}) \
+            .set_table_styles([{
+                'selector': 'th',
+                'props': [('background-color', '#1e3c72'), ('color', 'white'), ('font-size', '16px')]
+            }, {
+                'selector': 'td',
+                'props': [('border', '1px solid #ddd'), ('padding', '8px')]
+            }])
+
+        st.dataframe(styled_df)  # Display the styled DataFrame
 
         # Provide a download option for the DataFrame
         csv = last_12_months_df.to_csv(index=True).encode('utf-8')
