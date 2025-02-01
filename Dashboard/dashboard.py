@@ -105,36 +105,36 @@ def display_dashboard():
         <div style="background: linear-gradient(to right, #1e3c72, #2a5298); padding: 20px; border-radius: 10px; color: white;">
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 20px;">
                 <div style="text-align: left;">
-                    <h4 style="font-size: 14px; margin: -10;">Current Price</h4>
-                    <p style="font-size: 36px; margin: -10;">₹{current_price:.2f}</p>
+                    <h4 style="font-size: 18px; margin: 0;">Current Price</h4>
+                    <p style="font-size: 36px; margin: 0;">₹{current_price:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 14px; margin: -10;">1 Month Prediction</h4>
-                    <p style="font-size: 36px; margin: -10;">₹{one_month_prediction:.2f}</p>
+                    <h4 style="font-size: 18px; margin: 0;">1 Month Prediction</h4>
+                    <p style="font-size: 36px; margin: 0;">₹{one_month_prediction:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 14px; margin: -10;">6 Month Prediction</h4>
-                    <p style="font-size: 36px; margin: -10;">₹{six_month_prediction:.2f}</p>
+                    <h4 style="font-size: 18px; margin: 0;">6 Month Prediction</h4>
+                    <p style="font-size: 36px; margin: 0;">₹{six_month_prediction:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 14px; margin: -10;">1 Year Prediction</h4>
-                    <p style="font-size: 36px; margin: -10;">₹{one_year_prediction:.2f}</p>
+                    <h4 style="font-size: 18px; margin: 0;">1 Year Prediction</h4>
+                    <p style="font-size: 36px; margin: 0;">₹{one_year_prediction:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 14px; margin: -10;">Highest Price ({highest_price_month})</h4>
-                    <p style="font-size: 36px; margin: -10;">₹{highest_price:.2f}</p>
+                    <h4 style="font-size: 18px; margin: 0;">Highest Price ({highest_price_month})</h4>
+                    <p style="font-size: 36px; margin: 0;">₹{highest_price:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 14px; margin: -10;">Lowest Price ({lowest_price_month})</h4>
-                    <p style="font-size: 36px; margin: -10;">₹{lowest_price:.2f}</p>
+                    <h4 style="font-size: 18px; margin: 0;">Lowest Price ({lowest_price_month})</h4>
+                    <p style="font-size: 36px; margin: 0;">₹{lowest_price:.2f}</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 14px; margin: -10;">% Change from Previous Month</h4>
-                    <p style="font-size: 36px; margin: -10;">{percentage_change:.2f}%</p>
+                    <h4 style="font-size: 18px; margin: 0;">% Change</h4>
+                    <p style="font-size: 36px; margin: 0;">{percentage_change:.2f}%</p>
                 </div>
                 <div style="text-align: left;">
-                    <h4 style="font-size: 14px; margin: -10;">Average Price (225)</h4>
-                    <p style="font-size: 36px; margin: -10;">₹{average_price_this_year:.2f}</p>
+                    <h4 style="font-size: 18px; margin: 0;">Average Price (2025)</h4>
+                    <p style="font-size: 36px; margin: 0;">₹{average_price_this_year:.2f}</p>
                 </div>
             </div>
         </div>
